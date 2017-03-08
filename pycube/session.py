@@ -13,10 +13,7 @@ class Session:
         del self.times[index]
         
     def gettimes(self):
-        s = ""
-        for t in self.times:
-            s += str(t) + '\n'
-        return s
+        return '\n'.join(self.times)
         
     def save(self):
         if not os.path.isdir("data"):
