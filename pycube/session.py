@@ -1,3 +1,4 @@
+import os
 import datetime
 
 class Session:
@@ -12,6 +13,9 @@ class Session:
         del self.times[index]
         
     def save(self):
+        if not os.path.isdir("data"):
+            os.makedirs("data")
+        
         name = str(datetime.datetime.now())[:-7].replace('-', '').replace(':', '').replace(' ', '')
         with open("./data/" + name + ".txt", 'w') as file:
             for t in self.times:
