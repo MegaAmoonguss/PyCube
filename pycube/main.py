@@ -3,7 +3,9 @@ import time
 import js2py
 from datetime import datetime
 from PIL import ImageTk
-from tkinter import Tk, Frame, Label, Button, Listbox, filedialog, RIGHT, LEFT, END
+from tkinter import Tk, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
+from tkinter.constants import BOTH
+from tkinter.ttk import Treeview
 from pycube.image_gen import genimage
 from pycube.session import Session
 
@@ -24,28 +26,41 @@ class PyCube:
         self.root.mainloop()
         
     def initUI(self):
-        frame = Frame(self.root)
-        frame.pack(side=LEFT)
+        leftframe = Frame(self.root)
+        leftframe.pack(side=LEFT, fill=BOTH, expand=1)
+        
+        rightframe = Frame(self.root)
+        rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
         
         scrambler.scramble()
-        self.scramble = Label(frame, text=scrambler.scramblestring(0))
+        self.scramble = Label(leftframe, text=scrambler.scramblestring(0))
         self.scramble.pack()
 
-        self.time_label = Label(frame, text="0.000")
+        self.time_label = Label(leftframe, text="0.000")
         self.time_label.pack()
         
-        self.scramble_img = Label(frame)
+        self.scramble_img = Label(leftframe)
         self.scramble_img.pack()
         self.update_image()
         
-        self.save = Button(text="Save", command=self.savetimes)
+        self.save = Button(rightframe, text="Save", command=self.savetimes)
         self.save.pack()
         
-        timesframe = Frame(self.root)
-        timesframe.pack(side=RIGHT)
-        
-        self.times = Listbox(timesframe)
-        self.times.pack()
+        self.grid = Treeview(rightframe)
+        self.grid["columns"] = ("times", "avg5", "avg12", "mean", "sd")
+        self.grid.heading("#0", text='Time', anchor='w')
+        self.grid.column("#0", stretch=NO, width=0, anchor="w")
+        self.grid.heading("times", text="Times")
+        self.grid.column('times', anchor='center', width=70)
+        self.grid.heading("avg5", text="Avg. of 5")
+        self.grid.column('avg5', anchor='center', width=70)
+        self.grid.heading("avg12", text="Avg. of 12")
+        self.grid.column('avg12', anchor='center', width=70)
+        self.grid.heading("mean", text="Session mean")
+        self.grid.column('mean', anchor='center', width=80)
+        self.grid.heading("sd", text="SD")
+        self.grid.column('sd', anchor='center', width=70)
+        self.grid.pack(side=TOP)
         
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
@@ -67,7 +82,11 @@ class PyCube:
             
             t = float(self.time_label.cget("text"))
             self.session.addtime(t)
-            self.times.insert(END, t)
+            if self.session.avg5[-1] != 0:
+                avg5val = self.session.avg5[-1]
+            else:
+                avg5val = "N/A"
+            self.grid.insert("", "end", values=(t, avg5val, "N/A", "N/A", "N/A"))
             
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
