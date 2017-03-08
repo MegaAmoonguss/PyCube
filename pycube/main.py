@@ -5,7 +5,7 @@ from datetime import datetime
 from PIL import ImageTk
 from tkinter import Tk, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
 from tkinter.constants import BOTH
-from tkinter.ttk import Treeview
+from tkinter.ttk import Treeview, Scrollbar
 from pycube.image_gen import genimage
 from pycube.session import Session
 
@@ -60,6 +60,11 @@ class PyCube:
         self.grid.column('mean', anchor='center', width=80)
         self.grid.heading("sd", text="SD")
         self.grid.column('sd', anchor='center', width=70)
+        
+        self.gridscroll = Scrollbar()
+        self.gridscroll.configure(command=self.grid.yview)
+        
+        self.grid.configure(yscrollcommand=self.gridscroll.set)
         self.grid.pack(side=TOP)
         
         self.root.bind("<KeyRelease-space>", self.start_timer)
@@ -82,11 +87,18 @@ class PyCube:
             
             t = float(self.time_label.cget("text"))
             self.session.addtime(t)
+            
             if self.session.avg5[-1] != 0:
                 avg5val = self.session.avg5[-1]
             else:
                 avg5val = "N/A"
-            self.grid.insert("", "end", values=(t, avg5val, "N/A", "N/A", "N/A"))
+            
+            if self.session.avg12[-1] != 0:
+                avg12val = self.session.avg12[-1]
+            else:
+                avg12val = "N/A"
+            
+            self.grid.insert("", "end", values=(t, avg5val, avg12val, self.session.mean[-1], "N/A"))
             
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)

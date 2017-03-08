@@ -17,6 +17,18 @@ class Session:
             self.avg5.append(float("%.3f" % (sum(last5) / 3)))
         else:
             self.avg5.append(0)
+            
+        # Calculate average of 12
+        if len(self.times) >= 12:
+            last12 = self.times[-12:]
+            last12.remove(min(last12))
+            last12.remove(max(last12))
+            self.avg12.append(float("%.3f" % (sum(last12) / 3)))
+        else:
+            self.avg12.append(0)
+            
+        # Calculate session mean
+        self.mean.append(float("%.3f" % (sum(self.times) / len(self.times))))
     
     def removetime(self, index):
         del self.times[index]
