@@ -1,6 +1,5 @@
 from distutils.core import setup
 
-
 setup(name="PyCube",
       author="Graham Preston",
       author_email="graham.preston@gmail.com",
