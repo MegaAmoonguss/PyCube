@@ -3,7 +3,7 @@ import time
 import js2py
 from datetime import datetime
 from PIL import ImageTk
-from tkinter import Tk, Frame, Label, Button, filedialog
+from tkinter import Tk, Frame, Label, Button, Listbox, filedialog, RIGHT, LEFT, END
 from pycube.image_gen import genimage
 from pycube.session import Session
 
@@ -25,7 +25,7 @@ class PyCube:
         
     def initUI(self):
         frame = Frame(self.root)
-        frame.pack()
+        frame.pack(side=LEFT)
         
         scrambler.scramble()
         self.scramble = Label(frame, text=scrambler.scramblestring(0))
@@ -40,6 +40,12 @@ class PyCube:
         
         self.save = Button(text="Save", command=self.savetimes)
         self.save.pack()
+        
+        timesframe = Frame(self.root)
+        timesframe.pack(side=RIGHT)
+        
+        self.times = Listbox(timesframe)
+        self.times.pack()
         
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
@@ -58,7 +64,11 @@ class PyCube:
             self._job = None
             self.running = False
             self.root.bind("<KeyRelease-space>", self.rebind)
-            self.session.addtime(float(self.time_label.cget("text")))
+            
+            t = float(self.time_label.cget("text"))
+            self.session.addtime(t)
+            self.times.insert(END, t)
+            
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
