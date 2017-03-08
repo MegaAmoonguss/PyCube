@@ -17,6 +17,6 @@ class Session:
             os.makedirs("data")
         
         name = str(datetime.datetime.now())[:-7].replace('-', '').replace(':', '').replace(' ', '')
-        with open("./data/" + name + ".txt", 'w') as file:
+        with open(os.path.join("data", name + ".txt"), 'w') as file:
             for t in self.times:
                 file.write(str(t) + '\n')
