@@ -1,6 +1,6 @@
 from distutils.core import setup
 
 
-setup(name="pycube",
+setup(name="PyCube",
       url="https://github.com/MegaAmoonguss/pycube",
-      install_requires=["js2py"])
+      install_requires=["js2py", "pillow"])

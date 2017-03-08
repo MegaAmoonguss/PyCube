@@ -239,6 +239,16 @@ function scramblestring(n){
 }
  
 function imagestring(nr){
+	for(var k=0; k<6; k++){
+		colors[k]=colorList.length-3;	// gray
+		for( var i=0; i<colorList.length; i+=3 ){
+			if( colorString.charAt(k)==colorList[i] ){
+				colors[k]=i;
+				break;
+			}
+		}
+	}
+	
 	var s="",i,f,d=0,q;
  
 	// initialise colours
@@ -264,21 +274,19 @@ function imagestring(nr){
 	var imageheight = 160; // height of cube images in pixels (160px is a good height for fitting 5 images on a sheet of paper)
 	var stickerheight = Math.floor(imageheight/(size*3));
 	if(stickerheight < 5) { stickerheight = 5; } // minimum sticker size of 5px, takes effect when cube size reaches 11
-	s="<div style='width:"+(stickerheight*size*4)+"px; height:"+(stickerheight*size*3)+"px;'>";
+	s="";
 	for(i=0;i<3*size;i++){
-		s+="<div style='float: left; display: block; height: "+stickerheight+"px; width: "+(stickerheight*size*4)+"px; line-height: 0px;'>";
 		for(f=0;f<4*size;f++){
 			if(flat2posit[d]<0){
-				s+="<div style='overflow: hidden; display: block; float: left; height: "+stickerheight+"px; width: "+stickerheight+"px;'></div>";
+				s+="empty ";
 			}else{
 				var c = colorPerm[ori][posit[flat2posit[d]]];
-				s+="<div style='overflow: hidden; display: block; float: left; border: 1px solid #000; height: "+(stickerheight*1-2)+"px; width: "+(stickerheight*1-2)+"px;'><img src='scrbg/"+colorList[colors[c]+1]+"' /></div>";
+				s+=colorList[colors[c]+1] + " ";
 			}
 			d++;
 		}
-		s+="</div>";
+		s+="newline ";
 	}
-	s+="</div>";
 	return(s);
 }
  

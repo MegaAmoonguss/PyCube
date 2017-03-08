@@ -2,11 +2,13 @@ import time
 from tkinter import Tk, Frame, Label
 import os
 import js2py
+from pycube.image_gen import genimage
+from PIL import ImageTk
 
-if not os.path.isfile("scrambler.py"):
+if not os.path.isfile("./scrambler.py"):
     js2py.translate_file("../scrambler/wca-scramble.js", "scrambler.py")
 
-from pycube.scrambler import scrambler
+from pycube.scrambler import scrambler #@UnresolvedImport
 
 class PyCube:
     
@@ -23,6 +25,10 @@ class PyCube:
         self.time_label = Label(frame, text="0.000")
         self.time_label.pack()
         
+        img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0)))
+        self.scramble_img = Label(frame, image=img)
+        self.scramble_img.pack()
+        
         self.root.bind("<space>", self.timer)
         self._job = None
         
@@ -36,11 +42,18 @@ class PyCube:
             self.root.after_cancel(self._job)
             self._job = None
             scrambler.scramble()
-            self.scramble.configure(text=scrambler.scramblestring(0))
+            scramblestr = scrambler.scramblestring(0)
+            self.scramble.configure(text=scramblestr)
+            self.update_image()
         
     def update_timer(self):
         now = float("%.3f" % (time.time() - self.t0))
         self.time_label.configure(text=now)
         self._job = self.root.after(10, self.update_timer)
+        
+    def update_image(self):
+        img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0)))
+        self.scramble_img.configure(image=img)
+        self.scramble_img.image = img
 
 app = PyCube()
