@@ -1,6 +1,3 @@
-import os
-import datetime
-
 class Session:
     
     def __init__(self):
@@ -13,12 +10,4 @@ class Session:
         del self.times[index]
         
     def gettimes(self):
-        return '\n'.join(self.times)
-        
-    def save(self):
-        if not os.path.isdir("data"):
-            os.makedirs("data")
-        
-        name = str(datetime.datetime.now())[:-7].replace('-', '').replace(':', '').replace(' ', '')
-        with open(os.path.join("../data", name + ".txt"), 'w') as file:
-            file.write(self.gettimes())
+        return '\n'.join([str(t) for t in self.times])

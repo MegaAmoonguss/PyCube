@@ -1,5 +1,6 @@
 import time
-from tkinter import Tk, Frame, Label, Button
+from datetime import datetime
+from tkinter import Tk, Frame, Label, Button, filedialog
 import os
 import js2py
 from pycube.image_gen import genimage
@@ -37,7 +38,7 @@ class PyCube:
         self.scramble_img.pack()
         self.update_image()
         
-        self.save = Button(text="Save", command=self.session.save)
+        self.save = Button(text="Save", command=self.savetimes)
         self.save.pack()
         
         self.root.bind("<KeyRelease-space>", self.start_timer)
@@ -75,5 +76,20 @@ class PyCube:
         img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0)))
         self.scramble_img.configure(image=img)
         self.scramble_img.image = img
+    
+    def savetimes(self):
+        if not os.path.isdir("data"):
+            os.makedirs("data")
+            
+        name = str(datetime.now())[:-7].replace('-', '').replace(':', '').replace(' ', '')
+        f = filedialog.asksaveasfilename(initialfile=name,
+                                         initialdir="../data/",
+                                         defaultextension="*.txt",
+                                         title="Save session",
+                                         filetypes=(("Text Documents","*.txt"), ("All Files","*.*")))
+        if f == '':
+            return
+        with open(f, 'w') as file:
+            file.write(self.session.gettimes())
 
 app = PyCube()
