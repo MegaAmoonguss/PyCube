@@ -99,3 +99,6 @@ scrambler/test.html
 
 # Compiled JS
 pycube/scrambler.py
+
+# PyCube files
+data/

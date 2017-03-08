@@ -14,10 +14,16 @@ class PyCube:
     
     def __init__(self):
         self.root = Tk()
+        self.root.title("PyCube")
         
+        self.initUI()
+        
+        self.root.mainloop()
+        
+    def initUI(self):
         frame = Frame(self.root)
         frame.pack()
-
+        
         scrambler.scramble()
         self.scramble = Label(frame, text=scrambler.scramblestring(0))
         self.scramble.pack()
@@ -25,15 +31,13 @@ class PyCube:
         self.time_label = Label(frame, text="0.000")
         self.time_label.pack()
         
-        img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0)))
-        self.scramble_img = Label(frame, image=img)
+        self.scramble_img = Label(frame)
         self.scramble_img.pack()
+        self.update_image()
         
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
         self.running = False
-        
-        self.root.mainloop()
         
     def start_timer(self, event=None):
         if not self.running:
