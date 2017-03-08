@@ -1,7 +1,10 @@
 import time
 from tkinter import Tk, Frame, Button, Label
-from pycube.scrambler import scramble
-    
+import js2py
+
+js2py.translate_file("../scrambler/wca-scramble.js", "scrambler.py")
+from scrambler import scrambler #@UnresolvedImport
+
 class PyCube:
     
     def __init__(self):
@@ -10,7 +13,8 @@ class PyCube:
         frame = Frame(self.root)
         frame.pack()
 
-        self.scramble = Label(frame, text=scramble())
+        scrambler.scramble()
+        self.scramble = Label(frame, text=scrambler.scramblestring(0))
         self.scramble.pack()
 
         self.time_label = Label(frame, text="0.000")
@@ -38,6 +42,7 @@ class PyCube:
                                    command=self.start_timer)
         self.root.after_cancel(self._job)
         self._job = None
-        self.scramble.configure(text=scramble())
+        scrambler.scramble()
+        self.scramble.configure(text=scrambler.scramblestring(0))
 
 app = PyCube()

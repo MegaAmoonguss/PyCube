@@ -8,11 +8,11 @@ var = Scope( JS_BUILTINS )
 set_global_object(var)
 
 # Code follows:
-var.registers(['size', 'cubeorient', 'colorPerm', 'posit', 'seq', 'scramblestring', 'colorString', 'appendmoves', 'imagestring', 'colorList', 'flat2posit', 'doslice', 'colors', 'scramble', 'help', 'mult', 'setForm', 'seqlen', 'numcub'])
+var.registers(['help', 'cubeorient', 'colorString', 'colors', 'flat2posit', 'scramble', 'scramblestring', 'doslice', 'mult', 'colorPerm', 'imagestring', 'numcub', 'setForm', 'seq', 'size', 'posit', 'appendmoves', 'colorList', 'seqlen'])
 @Js
 def PyJsHoisted_appendmoves_(sq, axsl, tl, la, this, arguments, var=var):
     var = Scope({'sq':sq, 'axsl':axsl, 'tl':tl, 'la':la, 'this':this, 'arguments':arguments}, var)
-    var.registers(['q', 'm', 'la', 'sl', 'tl', 'axsl', 'sa', 'sq'])
+    var.registers(['axsl', 'sa', 'sl', 'tl', 'm', 'la', 'sq', 'q'])
     #for JS loop
     var.put('sl', Js(0.0))
     while (var.get('sl')<var.get('tl')):
@@ -33,7 +33,7 @@ var.put('appendmoves', PyJsHoisted_appendmoves_)
 @Js
 def PyJsHoisted_scramble_(this, arguments, var=var):
     var = Scope({'this':this, 'arguments':arguments}, var)
-    var.registers(['q', 'la', 'i', 'moved', 'ax', 'sl', 'tl', 'axsl', 'axam'])
+    var.registers(['axsl', 'ax', 'i', 'moved', 'sl', 'tl', 'la', 'q', 'axam'])
     var.put('tl', var.get('size'))
     if (var.get('mult') or ((var.get('size')&Js(1.0))!=Js(0.0))):
         (var.put('tl',Js(var.get('tl').to_number())-Js(1))+Js(1))
@@ -118,7 +118,7 @@ var.put('scramble', PyJsHoisted_scramble_)
 @Js
 def PyJsHoisted_scramblestring_(n, this, arguments, var=var):
     var = Scope({'n':n, 'this':this, 'arguments':arguments}, var)
-    var.registers(['i', 'k', 's', 'n', 'j', 'ori'])
+    var.registers(['i', 'n', 's', 'j', 'k', 'ori'])
     var.put('s', Js(''))
     #for JS loop
     var.put('i', Js(0.0))
@@ -154,7 +154,7 @@ var.put('scramblestring', PyJsHoisted_scramblestring_)
 @Js
 def PyJsHoisted_imagestring_(nr, this, arguments, var=var):
     var = Scope({'nr':nr, 'this':this, 'arguments':arguments}, var)
-    var.registers(['q', 'i', 'imageheight', 'f', 'stickerheight', 's', 'c', 'nr', 'ori', 'd'])
+    var.registers(['d', 'i', 'imageheight', 'f', 'stickerheight', 's', 'c', 'q', 'ori', 'nr'])
     var.put('s', Js(''))
     var.put('d', Js(0.0))
     #for JS loop
@@ -221,7 +221,7 @@ var.put('imagestring', PyJsHoisted_imagestring_)
 @Js
 def PyJsHoisted_doslice_(f, d, q, this, arguments, var=var):
     var = Scope({'f':f, 'd':d, 'q':q, 'this':this, 'arguments':arguments}, var)
-    var.registers(['q', 's2', 'i', 'f', 'k', 'f3', 'f1', 'f4', 'c', 'j', 'f2', 'd'])
+    var.registers(['f1', 'd', 'i', 'f', 'f2', 'c', 's2', 'j', 'k', 'q', 'f4', 'f3'])
     pass
     var.put('s2', (var.get('size')*var.get('size')))
     pass

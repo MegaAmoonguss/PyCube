@@ -49,7 +49,7 @@ colorPerm[22] = new Array(5,3,1,2,0,4);
 colorPerm[23] = new Array(5,4,3,2,1,0);
  
 // get all the form settings from the url parameters
-function parse() {
+/*function parse() {
 	var s="";
 	var urlquery=location.href.split("?")
 	if(urlquery.length>1){
@@ -82,7 +82,7 @@ function parse() {
 			}
 		}
 	}
-}
+}*/
  
 // append set of moves along an axis to current sequence in order
 function appendmoves( sq, axsl, tl, la ){
@@ -399,7 +399,7 @@ function help(){
 		"\nWritten by Jaap Scherphuis, Copyright 2004-2008.");
 }
  
-parse();
+//parse();
 function setForm(){
 	document.frm.size.value=size;
 	document.frm.len.value=seqlen;
