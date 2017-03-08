@@ -8,5 +8,5 @@ def genimage(s):
     for r in range(len(img) - 1):
         for c in range(len(img[0])):
             if img[r][c] != "empty":
-                cube_image.paste(Image.open("C:/Users/graha/workspace-py/pycube/scrambler/scrbg/" + img[r][c]), (25 * c, 25 * r))
+                cube_image.paste(Image.open("../images/" + img[r][c]), (25 * c, 25 * r))
     return cube_image
