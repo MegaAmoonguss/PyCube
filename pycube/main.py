@@ -29,22 +29,32 @@ class PyCube:
         self.scramble_img = Label(frame, image=img)
         self.scramble_img.pack()
         
-        self.root.bind("<space>", self.timer)
+        self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
+        self.running = False
         
         self.root.mainloop()
         
-    def timer(self, event=None):
-        if self._job == None:
+    def start_timer(self, event=None):
+        if not self.running:
             self.t0 = float("%.3f" % time.time())
             self.update_timer()
-        else:
+            self.running = True
+            self.root.bind("<KeyPress-space>", self.reset_timer)
+    
+    def reset_timer(self, event=None):
+        if self.running:
             self.root.after_cancel(self._job)
             self._job = None
+            self.running = False
+            self.root.bind("<KeyRelease-space>", self.rebind)
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
             self.update_image()
+    
+    def rebind(self, event=None):
+        self.root.bind("<KeyRelease-space>", self.start_timer)
         
     def update_timer(self):
         now = float("%.3f" % (time.time() - self.t0))
