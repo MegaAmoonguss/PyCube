@@ -1,10 +1,10 @@
-import time
-from datetime import datetime
-from tkinter import Tk, Frame, Label, Button, filedialog
 import os
+import time
 import js2py
-from pycube.image_gen import genimage
+from datetime import datetime
 from PIL import ImageTk
+from tkinter import Tk, Frame, Label, Button, filedialog
+from pycube.image_gen import genimage
 from pycube.session import Session
 
 if not os.path.isfile("./scrambler.py"):
