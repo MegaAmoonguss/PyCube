@@ -1,9 +1,12 @@
 import time
 from tkinter import Tk, Frame, Button, Label
+import os
 import js2py
 
-js2py.translate_file("../scrambler/wca-scramble.js", "scrambler.py")
-from scrambler import scrambler #@UnresolvedImport
+if not os.path.isfile("scrambler.py"):
+    js2py.translate_file("../scrambler/wca-scramble.js", "scrambler.py")
+
+from pycube.scrambler import scrambler
 
 class PyCube:
     
