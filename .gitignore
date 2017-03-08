@@ -89,8 +89,10 @@ ENV/
 .ropeproject
 
 # Eclipse/PyDev project settings
+.settings/
 .project
 .pydevproject
 
-# Test module
+# Testing
 test.py
+scrambler/test.js
