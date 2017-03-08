@@ -1,9 +1,10 @@
 import time
-from tkinter import Tk, Frame, Label
+from tkinter import Tk, Frame, Label, Button
 import os
 import js2py
 from pycube.image_gen import genimage
 from PIL import ImageTk
+from pycube.session import Session
 
 if not os.path.isfile("./scrambler.py"):
     js2py.translate_file("../scrambler/wca-scramble.js", "scrambler.py")
@@ -16,6 +17,7 @@ class PyCube:
         self.root = Tk()
         self.root.title("PyCube")
         
+        self.session = Session()
         self.initUI()
         
         self.root.mainloop()
@@ -35,6 +37,9 @@ class PyCube:
         self.scramble_img.pack()
         self.update_image()
         
+        self.save = Button(text="Save", command=self.session.save)
+        self.save.pack()
+        
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
         self.running = False
@@ -52,6 +57,7 @@ class PyCube:
             self._job = None
             self.running = False
             self.root.bind("<KeyRelease-space>", self.rebind)
+            self.session.addtime(float(self.time_label.cget("text")))
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
