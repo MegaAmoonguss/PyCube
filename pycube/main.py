@@ -134,6 +134,7 @@ class PyCube:
             self.session.data[index][1] += 2
             self.session.data[index][7] = 1
             vals = self.session.data[index]
+            vals[1] = str(vals[1]) + "(+2)"
             self.grid.item(last, values=(vals[1:]))
             
     def dnf(self, event=None):
