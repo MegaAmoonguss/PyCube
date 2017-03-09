@@ -88,17 +88,7 @@ class PyCube:
             t = float(self.time_label.cget("text"))
             self.session.addtime(t)
             
-            if self.session.avg5[-1] != 0:
-                avg5val = self.session.avg5[-1]
-            else:
-                avg5val = "N/A"
-            
-            if self.session.avg12[-1] != 0:
-                avg12val = self.session.avg12[-1]
-            else:
-                avg12val = "N/A"
-            
-            self.grid.insert("", "end", values=(t, avg5val, avg12val, self.session.mean[-1], "N/A"))
+            self.grid.insert("", "end", values=(t, self.session.avg5[-1], self.session.avg12[-1], self.session.means[-1], self.session.sds[-1]))
             
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
