@@ -66,6 +66,9 @@ class Session:
     
     def getlastitemid(self):
         return self.data[-1][0]
+    
+    def clear(self):
+        self.data = []
         
     def __str__(self):
         s = ""

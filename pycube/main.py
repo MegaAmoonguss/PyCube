@@ -83,7 +83,8 @@ class PyCube:
         self.root.config(menu=menubar)
         
         fileMenu = Menu(menubar)
-        fileMenu.add_command(label="Export", command=self.export)
+        fileMenu.add_cascade(label="Import", command=self.session_import)
+        fileMenu.add_command(label="Export", command=self.session_export)
         menubar.add_cascade(label="File", menu=fileMenu)
         
     def start_timer(self, event=None):
@@ -154,7 +155,18 @@ class PyCube:
             vals = self.session.data[index]
             self.grid.item(last, values=(vals[1:]))
     
-    def export(self):
+    def session_import(self):
+        f = filedialog.askopenfilename(initialdir="../data/",
+                                       title="Import session",
+                                       filetypes=(("Text Documents", "*.txt"), ("All Files", "*.*")))
+        if f == '':
+            return
+        with open(f) as file:
+            self.session.clear()
+            self.grid.delete(*self.grid.get_children())
+            print(file.read())
+    
+    def session_export(self):
         if not os.path.isdir("data"):
             os.makedirs("data")
             
@@ -162,7 +174,7 @@ class PyCube:
         f = filedialog.asksaveasfilename(initialfile=name,
                                          initialdir="../data/",
                                          defaultextension="*.txt",
-                                         title="Save session",
+                                         title="Export session",
                                          filetypes=(("Text Documents","*.txt"), ("All Files","*.*")))
         if f == '':
             return
