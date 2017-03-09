@@ -37,8 +37,13 @@ class Session:
         entry.append(scramblestring)
         self.data.append(entry)
     
-    def calcstats(self, entry):
-        times = [self.data[i][1] for i in range(len(self.data)) if self.data[i][1] != "DNF"] + entry[1:]
+    # This is kinda ugly, might fix up later
+    def calcstats(self, entry=None):
+        times = [self.data[i][1] for i in range(len(self.data)) if self.data[i][1] != "DNF"]
+        if entry:
+            times.append(entry[1])
+        else:
+            entry = [self.data[-1][0], self.data[-1][1]]
         
         # Calculate average of 5
         if len(times) >= 5:

@@ -144,7 +144,7 @@ class PyCube:
                 return
             
             entry[1] = float("%.3f" % (entry[1] + 2))
-            entry = self.session.calcstats(entry)
+            entry = self.session.calcstats()
             vals = entry[1:]
             vals[0] = str(vals[0]) + "(+2)"
             self.grid.item(last, values=(vals))
