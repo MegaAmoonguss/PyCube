@@ -20,7 +20,7 @@ class Session:
             id += str(self.num_items)
         
         entry = [id, time]
-        times = [self.data[i][1] for i in range(len(self.data))] + entry[1:]
+        times = [self.data[i][1] for i in range(len(self.data)) if self.data[i][1] != "DNF"] + entry[1:]
         
         # Calculate average of 5
         if len(times) >= 5:

@@ -71,6 +71,7 @@ class PyCube:
         self.aMenu = Menu(self.root, tearoff=0)
         self.aMenu.add_command(label="Delete", command=self.delete)
         self.aMenu.add_command(label="+2", command=self.plus2)
+        self.aMenu.add_command(label="DNF", command=self.dnf)
         self.grid_item = ''
         
         self.grid.bind("<Button-3>", self.popup)
@@ -129,6 +130,14 @@ class PyCube:
             
             self.session.data[index][1] += 2
             self.session.data[index][7] = 1
+            vals = self.session.data[index]
+            self.grid.item(self.grid_item, values=(vals[1:]))
+            
+    def dnf(self):
+        if self.grid_item:
+            index = self.session.getidindex(self.grid_item)
+            self.session.data[index][1] = "DNF"
+            self.session.data[index][8] = 1
             vals = self.session.data[index]
             self.grid.item(self.grid_item, values=(vals[1:]))
             
