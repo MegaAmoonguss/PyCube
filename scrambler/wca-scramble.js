@@ -49,7 +49,8 @@ colorPerm[22] = new Array(5,3,1,2,0,4);
 colorPerm[23] = new Array(5,4,3,2,1,0);
  
 // get all the form settings from the url parameters
-/*function parse() {
+// Implement parse parameters
+function parse(sizeParam, seqlenParam, multParam, cubeorientParam) {
 	var s="";
 	var urlquery=location.href.split("?")
 	if(urlquery.length>1){
@@ -82,7 +83,7 @@ colorPerm[23] = new Array(5,4,3,2,1,0);
 			}
 		}
 	}
-}*/
+}
  
 // append set of moves along an axis to current sequence in order
 function appendmoves( sq, axsl, tl, la ){
@@ -239,16 +240,6 @@ function scramblestring(n){
 }
  
 function imagestring(nr){
-	for(var k=0; k<6; k++){
-		colors[k]=colorList.length-3;	// gray
-		for( var i=0; i<colorList.length; i+=3 ){
-			if( colorString.charAt(k)==colorList[i] ){
-				colors[k]=i;
-				break;
-			}
-		}
-	}
-	
 	var s="",i,f,d=0,q;
  
 	// initialise colours
