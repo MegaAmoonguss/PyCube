@@ -3,14 +3,16 @@ import statistics
 class Session:
     
     def __init__(self):
+        self.scrambles = []
         self.times = []
         self.avg5 = []
         self.avg12 = []
         self.means = []
         self.sds = []
     
-    def addtime(self, time):
+    def addtime(self, time, scramblestring):
         self.times.append(time)
+        self.scrambles.append(scramblestring)
         
         # Calculate average of 5
         if len(self.times) >= 5:
@@ -41,3 +43,9 @@ class Session:
     
     def removetime(self, index):
         del self.times[index]
+        
+    def __str__(self):
+        s = ""
+        for i in range(len(self.times)):
+            s += f"{self.times[i]} {self.avg5[i]} {self.avg12[i]} {self.means[i]} {self.sds[i]} {self.scrambles[i]}\n"
+        return s

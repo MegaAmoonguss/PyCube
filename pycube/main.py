@@ -86,7 +86,7 @@ class PyCube:
             self.root.bind("<KeyRelease-space>", self.rebind)
             
             t = float(self.time_label.cget("text"))
-            self.session.addtime(t)
+            self.session.addtime(t, scrambler.scramblestring(0))
             
             self.grid.insert("", "end", values=(t, self.session.avg5[-1], self.session.avg12[-1], self.session.means[-1], self.session.sds[-1]))
             
@@ -121,6 +121,6 @@ class PyCube:
         if f == '':
             return
         with open(f, 'w') as file:
-            file.write(self.session.gettimes())
+            file.write(str(self.session))
 
 app = PyCube()
