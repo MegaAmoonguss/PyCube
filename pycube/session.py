@@ -4,10 +4,23 @@ class Session:
     
     def __init__(self):
         self.data = []
+        self.num_items = 0
     
     def addtime(self, time, scramblestring):
-        entry = [time]
-        times = [self.data[i][0] for i in range(len(self.data))] + entry
+        self.num_items += 1
+        id = 'I'
+        if self.num_items < 100:
+            id += '0'
+            if self.num_items < 10:
+                id += '0'
+                id += str(self.num_items)
+            else:
+                id += str(self.num_items)
+        else:
+            id += str(self.num_items)
+        
+        entry = [id, time]
+        times = [self.data[i][1] for i in range(len(self.data))] + entry[1:]
         
         # Calculate average of 5
         if len(times) >= 5:
@@ -39,11 +52,14 @@ class Session:
         entry.append(scramblestring)
         self.data.append(entry)
     
-    def removetime(self, index):
-        del self.times[index]
+    def removetime(self, id):
+        for i in range(len(self.data)):
+            if self.data[i][0] == id:
+                del self.data[i]
+                break
         
     def __str__(self):
         s = ""
-        for i in range(len(self.times)):
-            s += ' '.join(self.data[i]) + '\n'
+        for i in range(len(self.data)):
+            s += ' '.join([str(value) for value in self.data[i]]) + '\n'
         return s

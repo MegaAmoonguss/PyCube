@@ -3,7 +3,7 @@ import time
 import js2py
 from datetime import datetime
 from PIL import ImageTk
-from tkinter import Tk, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
+from tkinter import Tk, Menu, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
 from tkinter.constants import BOTH
 from tkinter.ttk import Treeview, Scrollbar
 from pycube.image_gen import genimage
@@ -21,32 +21,29 @@ class PyCube:
         self.root.title("PyCube")
         
         self.session = Session()
-        self.initUI()
         
-        self.root.mainloop()
+        # init UI
+        self.leftframe = Frame(self.root)
+        self.leftframe.pack(side=LEFT, fill=BOTH, expand=1)
         
-    def initUI(self):
-        leftframe = Frame(self.root)
-        leftframe.pack(side=LEFT, fill=BOTH, expand=1)
-        
-        rightframe = Frame(self.root)
-        rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
+        self.rightframe = Frame(self.root)
+        self.rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
         
         scrambler.scramble()
-        self.scramble = Label(leftframe, text=scrambler.scramblestring(0))
+        self.scramble = Label(self.leftframe, text=scrambler.scramblestring(0))
         self.scramble.pack()
 
-        self.time_label = Label(leftframe, text="0.000")
+        self.time_label = Label(self.leftframe, text="0.000")
         self.time_label.pack()
         
-        self.scramble_img = Label(leftframe)
+        self.scramble_img = Label(self.leftframe)
         self.scramble_img.pack()
         self.update_image()
         
-        self.save = Button(rightframe, text="Save", command=self.export)
+        self.save = Button(self.rightframe, text="Save", command=self.export)
         self.save.pack()
         
-        self.grid = Treeview(rightframe)
+        self.grid = Treeview(self.rightframe)
         self.grid["columns"] = ("times", "avg5", "avg12", "mean", "sd")
         self.grid.heading("#0", text='Time', anchor='w')
         self.grid.column("#0", stretch=NO, width=0, anchor="w")
@@ -71,6 +68,14 @@ class PyCube:
         self._job = None
         self.running = False
         
+        self.aMenu = Menu(self.root, tearoff=0)
+        self.aMenu.add_command(label="Delete", command=self.delete)
+        self.grid_item = ''
+        
+        self.grid.bind("<Button-3>", self.popup)
+        
+        self.root.mainloop()
+        
     def start_timer(self, event=None):
         if not self.running:
             self.t0 = float("%.3f" % time.time())
@@ -88,7 +93,7 @@ class PyCube:
             t = float(self.time_label.cget("text"))
             self.session.addtime(t, scrambler.scramblestring(0))
             
-            self.grid.insert("", "end", values=(self.session.data[-1]))
+            self.grid.insert("", "end", values=(self.session.data[-1][1:]))
             
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
@@ -108,9 +113,14 @@ class PyCube:
         self.scramble_img.configure(image=img)
         self.scramble_img.image = img
     
-    def delete_item(self):
-        selected_item = self.grid.selection()[0]
-        self.grid.delete(selected_item)
+    def delete(self):
+        if self.grid_item:
+            self.grid.delete(self.grid_item)
+            self.session.removetime(self.grid_item)
+            
+    def popup(self, event):
+        self.aMenu.post(event.x_root, event.y_root)
+        self.grid_item = self.grid.focus()
     
     def export(self):
         if not os.path.isdir("data"):
