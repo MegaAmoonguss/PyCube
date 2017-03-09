@@ -29,6 +29,7 @@ class PyCube:
         self.rightframe = Frame(self.root)
         self.rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
         
+        scrambler.parse(3, 30, False, False)
         scrambler.scramble()
         self.scramble = Label(self.leftframe, text=scrambler.scramblestring(0))
         self.scramble.pack()
@@ -98,6 +99,7 @@ class PyCube:
             
             self.grid.insert("", "end", values=(self.session.data[-1][1:]))
             
+            scrambler.parse(3, 30, False, False)
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
@@ -131,7 +133,7 @@ class PyCube:
             if self.session.data[index][7] == 1 or self.session.data[index][8] == 1:
                 return
             
-            self.session.data[index][1] += 2
+            self.session.data[index][1] = float("%.3f" % (self.session.data[index][1] + 2))
             self.session.data[index][7] = 1
             vals = self.session.data[index]
             vals[1] = str(vals[1]) + "(+2)"

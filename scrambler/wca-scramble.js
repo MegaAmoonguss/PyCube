@@ -52,7 +52,7 @@ colorPerm[23] = new Array(5,4,3,2,1,0);
 // Implement parse parameters
 function parse(sizeParam, seqlenParam, multParam, cubeorientParam) {
 	var s="";
-	var urlquery=location.href.split("?")
+	/*var urlquery=location.href.split("?")
 	if(urlquery.length>1){
 		var urlterms=urlquery[1].split("&")
 		for( var i=0; i<urlterms.length; i++){
@@ -71,18 +71,11 @@ function parse(sizeParam, seqlenParam, multParam, cubeorientParam) {
 				if(urllr[1].length==6) colorString = urllr[1];
 			}
 		}
-	}
- 
-	// expand colour string into 6 actual html color names
-	for(var k=0; k<6; k++){
-		colors[k]=colorList.length-3;	// gray
-		for( var i=0; i<colorList.length; i+=3 ){
-			if( colorString.charAt(k)==colorList[i] ){
-				colors[k]=i;
-				break;
-			}
-		}
-	}
+	}*/
+	size = sizeParam
+	seqlen = seqlenParam
+	mult = multParam
+	cubeorient = cubeorientParam
 }
  
 // append set of moves along an axis to current sequence in order
@@ -240,6 +233,17 @@ function scramblestring(n){
 }
  
 function imagestring(nr){
+	// expand colour string into 6 actual html color names
+	for(var k=0; k<6; k++){
+		colors[k]=colorList.length-3;	// gray
+		for( var i=0; i<colorList.length; i+=3 ){
+			if( colorString.charAt(k)==colorList[i] ){
+				colors[k]=i;
+				break;
+			}
+		}
+	}
+	
 	var s="",i,f,d=0,q;
  
 	// initialise colours
