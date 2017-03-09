@@ -63,6 +63,9 @@ class Session:
         for i in range(len(self.data)):
             if self.data[i][0] == id:
                 return i
+    
+    def getlastitemid(self):
+        return self.data[-1][0]
         
     def __str__(self):
         s = ""

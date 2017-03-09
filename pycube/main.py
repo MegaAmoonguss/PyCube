@@ -3,7 +3,7 @@ import time
 import js2py
 from datetime import datetime
 from PIL import ImageTk
-from tkinter import Tk, Menu, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
+from tkinter import Tk, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
 from tkinter.constants import BOTH
 from tkinter.ttk import Treeview, Scrollbar
 from pycube.image_gen import genimage
@@ -36,6 +36,15 @@ class PyCube:
         self.time_label = Label(self.leftframe, text="0.000")
         self.time_label.pack()
         
+        self.plus2_button = Button(self.leftframe, text="+2", command=self.plus2)
+        self.plus2_button.pack()
+        
+        self.dnf_button = Button(self.leftframe, text="DNF", command=self.dnf)
+        self.dnf_button.pack()
+        
+        self.delete_button = Button(self.leftframe, text="Delete", command=self.delete)
+        self.delete_button.pack()
+        
         self.scramble_img = Label(self.leftframe)
         self.scramble_img.pack()
         self.update_image()
@@ -67,14 +76,6 @@ class PyCube:
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self._job = None
         self.running = False
-        
-        self.aMenu = Menu(self.root, tearoff=0)
-        self.aMenu.add_command(label="Delete", command=self.delete)
-        self.aMenu.add_command(label="+2", command=self.plus2)
-        self.aMenu.add_command(label="DNF", command=self.dnf)
-        self.grid_item = ''
-        
-        self.grid.bind("<Button-3>", self.popup)
         
         self.root.mainloop()
         
@@ -115,14 +116,16 @@ class PyCube:
         self.scramble_img.configure(image=img)
         self.scramble_img.image = img
     
-    def delete(self):
-        if self.grid_item:
-            self.grid.delete(self.grid_item)
-            self.session.removetime(self.grid_item)
+    def delete(self, event=None):
+        if len(self.session.data) > 0:
+            last = self.session.getlastitemid()
+            self.grid.delete(last)
+            self.session.removetime(last)
     
-    def plus2(self):
-        if self.grid_item:
-            index = self.session.getidindex(self.grid_item)
+    def plus2(self, event=None):
+        if len(self.session.data) > 0:
+            last = self.session.getlastitemid()
+            index = len(self.session.data) - 1
             
             # Check if time isn't already +2 or DNF
             if self.session.data[index][7] == 1 or self.session.data[index][8] == 1:
@@ -131,19 +134,16 @@ class PyCube:
             self.session.data[index][1] += 2
             self.session.data[index][7] = 1
             vals = self.session.data[index]
-            self.grid.item(self.grid_item, values=(vals[1:]))
+            self.grid.item(last, values=(vals[1:]))
             
-    def dnf(self):
-        if self.grid_item:
-            index = self.session.getidindex(self.grid_item)
+    def dnf(self, event=None):
+        if len(self.session.data) > 0:
+            last = self.session.getlastitemid()
+            index = len(self.session.data) - 1
             self.session.data[index][1] = "DNF"
             self.session.data[index][8] = 1
             vals = self.session.data[index]
-            self.grid.item(self.grid_item, values=(vals[1:]))
-            
-    def popup(self, event):
-        self.aMenu.post(event.x_root, event.y_root)
-        self.grid_item = self.grid.focus()
+            self.grid.item(last, values=(vals[1:]))
     
     def export(self):
         if not os.path.isdir("data"):
