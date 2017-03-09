@@ -144,6 +144,7 @@ class PyCube:
                 return
             
             entry[1] = float("%.3f" % (entry[1] + 2))
+            entry[6] = 1
             entry = self.session.calcstats()
             vals = entry[1:]
             vals[0] = str(vals[0]) + "(+2)"
@@ -153,10 +154,13 @@ class PyCube:
         if len(self.session.data) > 0:
             last = self.session.getlastitemid()
             index = len(self.session.data) - 1
-            self.session.data[index][1] = "DNF"
-            self.session.data[index][6] = 2
-            vals = self.session.data[index]
-            self.grid.item(last, values=(vals[1:]))
+            entry = self.session.data[index]
+            
+            entry[1] = "DNF"
+            entry[6] = 2
+            entry = self.session.calcstats()
+            vals = entry[1:]
+            self.grid.item(last, values=(vals))
             
     def session_new(self):
         self.session.clear()

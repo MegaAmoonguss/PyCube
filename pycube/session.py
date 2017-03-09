@@ -39,7 +39,7 @@ class Session:
     
     # This is kinda ugly, might fix up later
     def calcstats(self, entry=None):
-        times = [self.data[i][1] for i in range(len(self.data)) if self.data[i][1] != "DNF"]
+        times = [self.data[i][1] for i in range(len(self.data))]
         if entry:
             times.append(entry[1])
         else:
@@ -48,8 +48,13 @@ class Session:
         # Calculate average of 5
         if len(times) >= 5:
             last5 = times[-5:]
+            if "DNF" in last5:
+                last5.remove("DNF")
+                if "DNF" in last5:
+                    entry.append("N/A")
+            else:
+                last5.remove(max(last5))
             last5.remove(min(last5))
-            last5.remove(max(last5))
             entry.append(float("%.3f" % (sum(last5) / 3)))
         else:
             entry.append("N/A")
@@ -57,13 +62,20 @@ class Session:
         # Calculate average of 12
         if len(times) >= 12:
             last12 = times[-12:]
+            if "DNF" in last12:
+                last12.remove("DNF")
+                if "DNF" in last12:
+                    entry.append("N/A")
+            else:
+                last12.remove(max(last12))
             last12.remove(min(last12))
-            last12.remove(max(last12))
             entry.append(float("%.3f" % (sum(last12) / 3)))
         else:
             entry.append("N/A")
             
         # Calculate session mean
+        if "DNF" in times:
+            times.remove("DNF")
         entry.append(float("%.3f" % (sum(times) / len(times))))
         
         # Calculate standard deviation
