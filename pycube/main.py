@@ -83,7 +83,9 @@ class PyCube:
         self.root.config(menu=menubar)
         
         fileMenu = Menu(menubar)
-        fileMenu.add_cascade(label="Import", command=self.session_import)
+        fileMenu.add_command(label="New", command=self.session_new)
+        fileMenu.add_separator()
+        fileMenu.add_command(label="Import", command=self.session_import)
         fileMenu.add_command(label="Export", command=self.session_export)
         menubar.add_cascade(label="File", menu=fileMenu)
         
@@ -154,6 +156,10 @@ class PyCube:
             self.session.data[index][8] = 1
             vals = self.session.data[index]
             self.grid.item(last, values=(vals[1:]))
+            
+    def session_new(self):
+        self.session.clear()
+        self.grid.delete(*self.grid.get_children())
     
     def session_import(self):
         f = filedialog.askopenfilename(initialdir="../data/",
@@ -162,8 +168,7 @@ class PyCube:
         if f == '':
             return
         with open(f) as file:
-            self.session.clear()
-            self.grid.delete(*self.grid.get_children())
+            self.session_new()
             self.session = Session(file.read())
             
             for entry in self.session.data:
