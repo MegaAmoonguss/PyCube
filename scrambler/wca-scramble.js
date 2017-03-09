@@ -52,30 +52,10 @@ colorPerm[23] = new Array(5,4,3,2,1,0);
 // Implement parse parameters
 function parse(sizeParam, seqlenParam, multParam, cubeorientParam) {
 	var s="";
-	/*var urlquery=location.href.split("?")
-	if(urlquery.length>1){
-		var urlterms=urlquery[1].split("&")
-		for( var i=0; i<urlterms.length; i++){
-			var urllr=urlterms[i].split("=");
-			if(urllr[0]=="size") {
-				if(urllr[1]-0 >= 2 ) size=urllr[1]-0;
-			} else if(urllr[0]=="len") {
-				if(urllr[1]-0 >= 1 ) seqlen=urllr[1]-0;
-			} else if(urllr[0]=="num"){
-				if(urllr[1]-0 >= 1 ) numcub=urllr[1]-0;
-			} else if(urllr[0]=="multi") {
-				mult=(urllr[1]=="on");
-			} else if(urllr[0]=="cubori") {
-				cubeorient=(urllr[1]=="on");
-			} else if(urllr[0]=="col") {
-				if(urllr[1].length==6) colorString = urllr[1];
-			}
-		}
-	}*/
-	size = sizeParam
-	seqlen = seqlenParam
-	mult = multParam
-	cubeorient = cubeorientParam
+	size = sizeParam;
+	seqlen = seqlenParam;
+	mult = multParam;
+	cubeorient = cubeorientParam;
 }
  
 // append set of moves along an axis to current sequence in order
