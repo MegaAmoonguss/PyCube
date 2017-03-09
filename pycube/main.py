@@ -3,7 +3,7 @@ import time
 import js2py
 from datetime import datetime
 from PIL import ImageTk
-from tkinter import Tk, Frame, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
+from tkinter import Tk, Frame, Menu, Label, Button, filedialog, RIGHT, LEFT, TOP, NO
 from tkinter.constants import BOTH
 from tkinter.ttk import Treeview, Scrollbar
 from pycube.image_gen import genimage
@@ -23,6 +23,7 @@ class PyCube:
         self.session = Session()
         
         # init UI
+        self.initMenu()
         self.leftframe = Frame(self.root)
         self.leftframe.pack(side=LEFT, fill=BOTH, expand=1)
         
@@ -50,9 +51,6 @@ class PyCube:
         self.scramble_img.pack()
         self.update_image()
         
-        self.save = Button(self.rightframe, text="Save", command=self.export)
-        self.save.pack()
-        
         self.grid = Treeview(self.rightframe)
         self.grid["columns"] = ("times", "avg5", "avg12", "mean", "sd")
         self.grid.heading("#0", text='Time', anchor='w')
@@ -79,6 +77,14 @@ class PyCube:
         self.running = False
         
         self.root.mainloop()
+        
+    def initMenu(self):
+        menubar = Menu(self.root)
+        self.root.config(menu=menubar)
+        
+        fileMenu = Menu(menubar)
+        fileMenu.add_command(label="Export", command=self.export)
+        menubar.add_cascade(label="File", menu=fileMenu)
         
     def start_timer(self, event=None):
         if not self.running:
