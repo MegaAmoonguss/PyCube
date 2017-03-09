@@ -1,5 +1,6 @@
 import os
 import time
+import math
 import js2py
 from datetime import datetime
 from PIL import ImageTk
@@ -106,7 +107,12 @@ class PyCube:
             t = float(self.time_label.cget("text"))
             self.session.addtime(t, 0, scrambler.scramblestring(0))
             
-            self.grid.insert("", "end", values=(self.session.data[-1][1:]))
+            entry = self.session.data[-1][1:]
+            if entry[0] > 60:
+                mins = math.floor(entry[0] / 60)
+                secs = entry[0] - (mins * 60)
+                entry[0] = f"{mins}:{secs}"
+            self.grid.insert("", "end", values=(entry))
             
             scrambler.parse(3, 30, False, False)
             scrambler.scramble()
