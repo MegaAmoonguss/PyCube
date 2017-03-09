@@ -6,3 +6,4 @@ What will eventually be a fully featured Rubik's Cube timing program. Hopefully.
 * Make actually useful GUI
 * Add ways to change cube, scramble length, multi-slice, etc
 * Add score saving/statistics
+* Add score comparison to WCA records (?)
