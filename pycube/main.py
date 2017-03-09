@@ -43,7 +43,7 @@ class PyCube:
         self.scramble_img.pack()
         self.update_image()
         
-        self.save = Button(rightframe, text="Save", command=self.savetimes)
+        self.save = Button(rightframe, text="Save", command=self.export)
         self.save.pack()
         
         self.grid = Treeview(rightframe)
@@ -88,7 +88,7 @@ class PyCube:
             t = float(self.time_label.cget("text"))
             self.session.addtime(t, scrambler.scramblestring(0))
             
-            self.grid.insert("", "end", values=(t, self.session.avg5[-1], self.session.avg12[-1], self.session.means[-1], self.session.sds[-1]))
+            self.grid.insert("", "end", values=(self.session.data[-1]))
             
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
@@ -108,7 +108,11 @@ class PyCube:
         self.scramble_img.configure(image=img)
         self.scramble_img.image = img
     
-    def savetimes(self):
+    def delete_item(self):
+        selected_item = self.grid.selection()[0]
+        self.grid.delete(selected_item)
+    
+    def export(self):
         if not os.path.isdir("data"):
             os.makedirs("data")
             
