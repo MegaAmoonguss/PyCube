@@ -7,7 +7,7 @@ class Session:
             self.data = []
             self.num_items = 0
         else:
-            self.data = [entry.split()[:8] for entry in datastring.split('\n') if len(entry) > 0]
+            self.data = [entry.split(';') for entry in datastring.split('\n') if len(entry) > 0]
             self.num_items = len(self.data)
             
             for r in range(len(self.data)):
@@ -17,7 +17,7 @@ class Session:
                     except ValueError:
                         continue
     
-    def addtime(self, time, scramblestring):
+    def addtime(self, time, penalty, scramblestring):
         self.num_items += 1
         id = 'I'
         if self.num_items < 100:
@@ -31,6 +31,13 @@ class Session:
             id += str(self.num_items)
         
         entry = [id, time]
+        
+        entry = self.calcstats(entry)
+        
+        entry.append(scramblestring)
+        self.data.append(entry)
+    
+    def calcstats(self, entry):
         times = [self.data[i][1] for i in range(len(self.data)) if self.data[i][1] != "DNF"] + entry[1:]
         
         # Calculate average of 5
@@ -60,13 +67,11 @@ class Session:
         else:
             entry.append("N/A")
         
-        # Append two 0s to signify no +2 and no DNF respectively
-        entry.append(0)
+        # Append penalty; 0 for none, 1 for +2, 2 for DNF
         entry.append(0)
         
-        entry.append(scramblestring)
-        self.data.append(entry)
-    
+        return entry
+        
     def removetime(self, id):
         del self.data[self.getidindex(id)]
     
@@ -84,5 +89,5 @@ class Session:
     def __str__(self):
         s = ""
         for i in range(len(self.data)):
-            s += ' '.join([str(value) for value in self.data[i]]) + '\n'
+            s += ';'.join([str(value) for value in self.data[i]]) + '\n'
         return s

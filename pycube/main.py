@@ -104,7 +104,7 @@ class PyCube:
             self.root.bind("<KeyRelease-space>", self.rebind)
             
             t = float(self.time_label.cget("text"))
-            self.session.addtime(t, scrambler.scramblestring(0))
+            self.session.addtime(t, 0, scrambler.scramblestring(0))
             
             self.grid.insert("", "end", values=(self.session.data[-1][1:]))
             
@@ -137,23 +137,24 @@ class PyCube:
         if len(self.session.data) > 0:
             last = self.session.getlastitemid()
             index = len(self.session.data) - 1
+            entry = self.session.data[index] # Need to convert floats
             
             # Check if time isn't already +2 or DNF
-            if self.session.data[index][7] == 1 or self.session.data[index][8] == 1:
+            if entry[6] != 0:
                 return
             
-            self.session.data[index][1] = float("%.3f" % (self.session.data[index][1] + 2))
-            self.session.data[index][7] = 1
-            vals = self.session.data[index]
-            vals[1] = str(vals[1]) + "(+2)"
-            self.grid.item(last, values=(vals[1:]))
+            entry[1] = float("%.3f" % (entry[1] + 2))
+            entry = self.session.calcstats(entry)
+            vals = entry[1:]
+            vals[0] = str(vals[0]) + "(+2)"
+            self.grid.item(last, values=(vals))
             
     def dnf(self, event=None):
         if len(self.session.data) > 0:
             last = self.session.getlastitemid()
             index = len(self.session.data) - 1
             self.session.data[index][1] = "DNF"
-            self.session.data[index][8] = 1
+            self.session.data[index][6] = 2
             vals = self.session.data[index]
             self.grid.item(last, values=(vals[1:]))
             
