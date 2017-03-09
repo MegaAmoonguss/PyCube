@@ -104,14 +104,13 @@ class PyCube:
             self.running = False
             self.root.bind("<KeyRelease-space>", self.rebind)
             
-            t = float(self.time_label.cget("text"))
+            t = self.time_label.cget("text")
+            if ":" in str(t):
+                mins, secs = t.split(":")
+                t = (mins * 60) + secs
             self.session.addtime(t, 0, scrambler.scramblestring(0))
             
             entry = self.session.data[-1][1:]
-            if entry[0] > 60:
-                mins = math.floor(entry[0] / 60)
-                secs = entry[0] - (mins * 60)
-                entry[0] = f"{mins}:{secs}"
             self.grid.insert("", "end", values=(entry))
             
             scrambler.parse(3, 30, False, False)
@@ -125,6 +124,10 @@ class PyCube:
         
     def update_timer(self):
         now = float("%.3f" % (time.time() - self.t0))
+        if now > 60:
+            mins = math.floor(now / 60)
+            secs = now - (mins * 60)
+            now = f"{mins}:{secs}"
         self.time_label.configure(text=now)
         self._job = self.root.after(10, self.update_timer)
         
