@@ -2,9 +2,20 @@ import statistics
 
 class Session:
     
-    def __init__(self):
-        self.data = []
-        self.num_items = 0
+    def __init__(self, datastring=None):
+        if not datastring:
+            self.data = []
+            self.num_items = 0
+        else:
+            self.data = [entry.split()[:8] for entry in datastring.split('\n') if len(entry) > 0]
+            self.num_items = len(self.data)
+            
+            for r in range(len(self.data)):
+                for c in range(1, 6):
+                    try:
+                        self.data[r][c] = float(self.data[r][c])
+                    except ValueError:
+                        continue
     
     def addtime(self, time, scramblestring):
         self.num_items += 1

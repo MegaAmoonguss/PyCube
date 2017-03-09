@@ -164,7 +164,10 @@ class PyCube:
         with open(f) as file:
             self.session.clear()
             self.grid.delete(*self.grid.get_children())
-            print(file.read())
+            self.session = Session(file.read())
+            
+            for entry in self.session.data:
+                self.grid.insert("", "end", values=(entry[1:]))
     
     def session_export(self):
         if not os.path.isdir("data"):
