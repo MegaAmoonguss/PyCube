@@ -8,4 +8,3 @@ What will eventually be a fully featured Rubik's Cube timing program. Hopefully.
 * Add more statistics
 * Add score comparison to WCA records (?)
 * Make means, standard deviations, and averages update on penaly or DNF
-* Make it so you can only penalize the most recent time?
