@@ -49,14 +49,20 @@ class Session:
         else:
             entry.append("N/A")
         
+        # Append two 0s to signify no +2 and no DNF respectively
+        entry.append(0)
+        entry.append(0)
+        
         entry.append(scramblestring)
         self.data.append(entry)
     
     def removetime(self, id):
+        del self.data[self.getidindex(id)]
+    
+    def getidindex(self, id):
         for i in range(len(self.data)):
             if self.data[i][0] == id:
-                del self.data[i]
-                break
+                return i
         
     def __str__(self):
         s = ""

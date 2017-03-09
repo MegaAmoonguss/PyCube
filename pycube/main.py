@@ -70,6 +70,7 @@ class PyCube:
         
         self.aMenu = Menu(self.root, tearoff=0)
         self.aMenu.add_command(label="Delete", command=self.delete)
+        self.aMenu.add_command(label="+2", command=self.plus2)
         self.grid_item = ''
         
         self.grid.bind("<Button-3>", self.popup)
@@ -117,6 +118,19 @@ class PyCube:
         if self.grid_item:
             self.grid.delete(self.grid_item)
             self.session.removetime(self.grid_item)
+    
+    def plus2(self):
+        if self.grid_item:
+            index = self.session.getidindex(self.grid_item)
+            
+            # Check if time isn't already +2 or DNF
+            if self.session.data[index][7] == 1 or self.session.data[index][8] == 1:
+                return
+            
+            self.session.data[index][1] += 2
+            self.session.data[index][7] = 1
+            vals = self.session.data[index]
+            self.grid.item(self.grid_item, values=(vals[1:]))
             
     def popup(self, event):
         self.aMenu.post(event.x_root, event.y_root)
