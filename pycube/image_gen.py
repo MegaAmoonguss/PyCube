@@ -4,7 +4,6 @@ from PIL import Image
 def genimage(s, cubesize):
     cube_image = Image.new("RGB", (300, 225))
     squaresize = math.floor(75 / cubesize)
-    print(squaresize)
     
     rows = [line.strip() for line in s.split("newline")]
     img = [row.split() for row in rows]
