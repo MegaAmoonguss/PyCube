@@ -32,7 +32,6 @@ class Session:
             id += num_items_hex
         
         entry = [id, time]
-        
         entry = self.calcstats(entry)
         
         entry.append(scramblestring)
@@ -58,7 +57,7 @@ class Session:
             last5.remove(min(last5))
             entry.append(float("%.3f" % (sum(last5) / 3)))
         else:
-            entry.append("")
+            entry.append("DNF")
             
         # Calculate average of 12
         if len(times) >= 12:
@@ -72,7 +71,7 @@ class Session:
             last12.remove(min(last12))
             entry.append(float("%.3f" % (sum(last12) / 3)))
         else:
-            entry.append("")
+            entry.append("DNF")
             
         # Calculate session mean
         if "DNF" in times:

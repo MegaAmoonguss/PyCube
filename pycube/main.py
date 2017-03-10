@@ -74,7 +74,7 @@ class PyCube:
         self.grid.configure(yscrollcommand=self.gridscroll.set)
         self.grid.pack(side=TOP)
         
-        self.root.bind("<KeyRelease-space>", self.start_timer)
+        self.root.bind("<KeyRelease-space>", self.start_inspection)
         self._job = None
         self.running = False
         
@@ -93,6 +93,8 @@ class PyCube:
         
     def start_timer(self, event=None):
         if not self.running:
+            self.root.after_cancel(self._job)
+            self._job = None
             self.t0 = float("%.3f" % time.time())
             self.update_timer()
             self.running = True
@@ -119,9 +121,9 @@ class PyCube:
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
             self.update_image()
-    
+            
     def rebind(self, event=None):
-        self.root.bind("<KeyRelease-space>", self.start_timer)
+        self.root.bind("<KeyRelease-space>", self.start_inspection)
         
     def update_timer(self):
         now = float("%.3f" % (time.time() - self.t0))
@@ -129,8 +131,28 @@ class PyCube:
             mins = math.floor(now / 60)
             secs = now - (mins * 60)
             now = f"{mins}:{secs}"
-        self.time_label.configure(text=now)
+        self.time_label.configure(text=now, fg="black")
         self._job = self.root.after(10, self.update_timer)
+    
+    def start_inspection(self, event=None):
+        self.inspect_time = 5
+        self.root.bind("<KeyRelease-space>", self.start_timer)
+        self.update_inspection()
+    
+    def update_inspection(self):
+        if self.inspect_time == 0:
+            self.time_label.configure(text="DNF", fg="red")
+            
+            # Really ugly was to add a straight DNF, should fix later
+            # NOTE: Known bug when first time is DNF. MUST FIX
+            self.session.addtime(0, 2, scrambler.scramblestring(0))
+            entry = self.session.data[-1][1:]
+            self.grid.insert("", "end", values=(entry))
+            self.dnf()
+        else:
+            self.inspect_time -= 1
+            self.time_label.configure(text=self.inspect_time, fg="red")
+            self._job = self.root.after(1000, self.update_inspection)
         
     def update_image(self):
         img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0), self.cubesize))
@@ -168,6 +190,7 @@ class PyCube:
             
             entry[1] = "DNF"
             entry[6] = 2
+            
             entry = self.session.calcstats()
             vals = entry[1:]
             self.grid.item(last, values=(vals))
