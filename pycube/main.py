@@ -190,8 +190,8 @@ class PyCube:
                 self.grid.insert("", "end", values=(entry[1:]))
     
     def session_export(self):
-        if not os.path.isdir("data"):
-            os.makedirs("data")
+        if not os.path.isdir("../data/"):
+            os.makedirs("../data/")
             
         name = str(datetime.now())[:-7].replace('-', '').replace(':', '').replace(' ', '')
         f = filedialog.asksaveasfilename(initialfile=name,
