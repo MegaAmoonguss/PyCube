@@ -31,7 +31,8 @@ class PyCube:
         self.rightframe = Frame(self.root)
         self.rightframe.pack(side=RIGHT, fill=BOTH, expand=1)
         
-        scrambler.parse(3, 30, False, False)
+        self.cubesize = 3
+        scrambler.parse(self.cubesize, 30, False, False)
         scrambler.scramble()
         self.scramble = Label(self.leftframe, text=scrambler.scramblestring(0))
         self.scramble.pack()
@@ -113,7 +114,7 @@ class PyCube:
             entry = self.session.data[-1][1:]
             self.grid.insert("", "end", values=(entry))
             
-            scrambler.parse(3, 30, False, False)
+            scrambler.parse(self.cubesize, 30, False, False)
             scrambler.scramble()
             scramblestr = scrambler.scramblestring(0)
             self.scramble.configure(text=scramblestr)
@@ -132,7 +133,7 @@ class PyCube:
         self._job = self.root.after(10, self.update_timer)
         
     def update_image(self):
-        img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0)))
+        img = ImageTk.PhotoImage(genimage(scrambler.imagestring(0), self.cubesize))
         self.scramble_img.configure(image=img)
         self.scramble_img.image = img
     
