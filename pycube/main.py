@@ -135,7 +135,7 @@ class PyCube:
         self._job = self.root.after(10, self.update_timer)
     
     def start_inspection(self, event=None):
-        self.inspect_time = 5
+        self.inspect_time = 16
         self.root.bind("<KeyRelease-space>", self.start_timer)
         self.update_inspection()
     
