@@ -52,13 +52,13 @@ class Session:
             if "DNF" in last5:
                 last5.remove("DNF")
                 if "DNF" in last5:
-                    entry.append("N/A")
+                    entry.append("")
             else:
                 last5.remove(max(last5))
             last5.remove(min(last5))
             entry.append(float("%.3f" % (sum(last5) / 3)))
         else:
-            entry.append("N/A")
+            entry.append("")
             
         # Calculate average of 12
         if len(times) >= 12:
@@ -66,13 +66,13 @@ class Session:
             if "DNF" in last12:
                 last12.remove("DNF")
                 if "DNF" in last12:
-                    entry.append("N/A")
+                    entry.append("")
             else:
                 last12.remove(max(last12))
             last12.remove(min(last12))
             entry.append(float("%.3f" % (sum(last12) / 3)))
         else:
-            entry.append("N/A")
+            entry.append("")
             
         # Calculate session mean
         if "DNF" in times:
@@ -83,7 +83,7 @@ class Session:
         if len(times) >= 2:
             entry.append(float("%.3f" % statistics.stdev(times)))
         else:
-            entry.append("N/A")
+            entry.append("")
         
         # Append penalty; 0 for none, 1 for +2, 2 for DNF
         entry.append(0)
