@@ -13,4 +13,7 @@ def genimage(s, cubesize):
                 color = Image.open("../images/" + img[r][c])
                 color.thumbnail((squaresize, squaresize), Image.ANTIALIAS)
                 cube_image.paste(color, (squaresize * c, squaresize * r))
+                
+    # Crop image if needed
+    cube_image = cube_image.crop((0, 0, 4 * cubesize * squaresize, 3 * cubesize * squaresize))
     return cube_image
