@@ -19,16 +19,17 @@ class Session:
     
     def addtime(self, time, penalty, scramblestring):
         self.num_items += 1
+        num_items_hex = hex(self.num_items)[2:].upper()
         id = 'I'
-        if self.num_items < 100:
+        if len(num_items_hex) < 3:
             id += '0'
-            if self.num_items < 10:
+            if len(num_items_hex) < 2:
                 id += '0'
-                id += str(self.num_items)
+                id += num_items_hex
             else:
-                id += str(self.num_items)
+                id += num_items_hex
         else:
-            id += str(self.num_items)
+            id += num_items_hex
         
         entry = [id, time]
         

@@ -141,22 +141,22 @@ class PyCube:
         if len(self.session.data) > 0:
             last = self.session.getlastitemid()
             self.grid.delete(last)
-            self.session.removetime(last)
+            self.session.removetime(last) 
     
     def plus2(self, event=None):
         if len(self.session.data) > 0:
             last = self.session.getlastitemid()
             index = len(self.session.data) - 1
-            entry = self.session.data[index] # Need to convert floats
+            entry = self.session.data[index]
             
-            # Check if time isn't already +2 or DNF
+            # Check if time isn't already +2 or DNF9
             if entry[6] != 0:
                 return
             
             entry[1] = float("%.3f" % (entry[1] + 2))
             entry[6] = 1
             entry = self.session.calcstats()
-            vals = entry[1:]
+            vals = entry[1:] + [scrambler.scramblestring(0)]
             vals[0] = str(vals[0]) + "(+2)"
             self.grid.item(last, values=(vals))
             
