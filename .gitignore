@@ -88,10 +88,11 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# Eclipse/PyDev project settings
+# IDE project settings
 .settings/
 .project
 .pydevproject
+.idea/
 
 # Testing
 test.py
