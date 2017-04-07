@@ -97,6 +97,7 @@ ENV/
 # Testing
 test.py
 scrambler/test.html
+index.html
 
 # Compiled JS
 pycube/scrambler.py
